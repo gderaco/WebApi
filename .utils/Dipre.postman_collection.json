@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "3f5702c7-15d9-4582-92cb-00b68ca8bdb3",
+		"name": "Dipre",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all karmas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/karmas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"karmas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific karma",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/karmas/amore",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"karmas",
+						"amore"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add karma",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"karma\":{\n      \"name\":\"amore\"\n   },\n   \"action\":\"increment\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/karmas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"karmas"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
