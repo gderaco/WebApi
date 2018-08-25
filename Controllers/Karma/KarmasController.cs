@@ -16,7 +16,7 @@ namespace AndreaDipreApi.Controllers
         {
             using (var db = new DatabaseContext())
             {
-                return db.Karmas.Select(k => k).ToList();
+                return Ok(db.Karmas.Select(k => k).ToList());
             }
         }
 
@@ -29,7 +29,7 @@ namespace AndreaDipreApi.Controllers
                 var karma = db.Karmas.Where(k => k.Name == karmaName).FirstOrDefault();
                 if (karma != null)
                 {
-                    return karma.Score;
+                    return Ok(new { score = karma.Score });
                 }
                 else
                 {
@@ -57,7 +57,7 @@ namespace AndreaDipreApi.Controllers
                     }
 
                     db.SaveChanges();
-                    return karma.Score;
+                    return Ok(karma);
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace AndreaDipreApi.Controllers
 
                     db.Karmas.Add(newKarma);
                     db.SaveChanges();
-                    return newKarma.Score;
+                    return Ok(newKarma);
                 }
             }
         }
