@@ -19,6 +19,13 @@ namespace AndreaDipreApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureLogging(factory =>
+                {
+                    factory
+                        .AddConsole()
+                        .AddDebug()
+                       .SetMinimumLevel(LogLevel.Trace);
+                });
     }
 }
