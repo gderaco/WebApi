@@ -2,7 +2,7 @@
 
 namespace AndreaDipreApi.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class IntialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

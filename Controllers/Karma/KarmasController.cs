@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace AndreaDipreApi.Controllers
 {
@@ -10,11 +11,18 @@ namespace AndreaDipreApi.Controllers
     [ApiController]
     public class KarmasController : ControllerBase
     {
+        private string _connectionString;
+
+        public KarmasController(IConfiguration config) 
+        {
+            _connectionString = config.GetConnectionString("KarmaContext");
+        }
+
         // GET api/karmas
         [HttpGet]
         public ActionResult<IEnumerable<Karma>> Get()
         {
-            using (var db = new DatabaseContext())
+            using (var db = new KarmaDatabaseContext(_connectionString))
             {
                 return Ok(db.Karmas.Select(k => k).ToList());
             }
@@ -24,7 +32,7 @@ namespace AndreaDipreApi.Controllers
         [HttpGet("{karmaName}")]
         public ActionResult<int> Get(string karmaName)
         {
-            using (var db = new DatabaseContext())
+            using (var db = new KarmaDatabaseContext(_connectionString))
             {
                 var karma = db.Karmas.Where(k => k.Name == karmaName).FirstOrDefault();
                 if (karma != null)
@@ -42,7 +50,7 @@ namespace AndreaDipreApi.Controllers
         [HttpPost]
         public ActionResult<int> Post([FromBody] KarmaRequest value)
         {
-            using (var db = new DatabaseContext())
+            using (var db = new KarmaDatabaseContext(_connectionString))
             {
                 var karma = db.Karmas.Where(k => k.Name == value.Karma.Name).FirstOrDefault();
                 if (karma != null)
