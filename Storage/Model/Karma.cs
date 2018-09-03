@@ -1,6 +1,9 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
+[Table("Karmas")]
 public class Karma
 {
     [Key]
@@ -14,5 +17,5 @@ public class Karma
     public string Article { get; set; }
 
     [JsonProperty(PropertyName="channel")]
-    public string Channel { get; set; }
+    public Guid ChannelId { get; set; }
 }

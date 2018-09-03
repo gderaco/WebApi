@@ -12,32 +12,36 @@ namespace AndreaDipreApi.Controllers
     [ApiController]
     public class KarmasController : ControllerBase
     {
-        private string _connectionString;
+        private readonly KarmaDatabaseContext _context;
 
-        public KarmasController(IConfiguration config) 
+        public KarmasController(KarmaDatabaseContext context)
         {
-            _connectionString = config.GetConnectionString("KarmaContext");
+            _context = context;
         }
-
         // GET api/karmas
-        [HttpGet]
-        public ActionResult<IEnumerable<Karma>> Get()
+        [HttpGet("{channelId}")]
+        public ActionResult<IEnumerable<Karma>> Get(string channelId)
         {
-            using (var db = new KarmaDatabaseContext(_connectionString))
+            using (var db = _context)
             {
-                return Ok(db.Karmas.Select(k => k).ToList());
+                return Ok(
+                    db.Karmas
+                    .Select(k => k)
+                    .Where(k => k.ChannelId.ToString() == channelId)
+                    .ToList());
             }
         }
 
         // GET api/karmas/%23%2fr%2fitaly/amore -> /api/karmas/#/r/italy/amore
-        [HttpGet("{channelName}/{karmaName}")]
-        public ActionResult<Karma> Get(string channelName,string karmaName)
+        [HttpGet("{channelId}/{karmaName}")]
+        public ActionResult<Karma> Get(string channelId,string karmaName)
         {
-            var decodedChannelName = WebUtility.UrlDecode(channelName);
-            
-            using (var db = new KarmaDatabaseContext(_connectionString))
+            using (var db = _context)
             {
-                var karma = db.Karmas.Where(k => k.Name == karmaName).FirstOrDefault();
+                var karma = 
+                    db.Karmas
+                    .Where(k => k.Name == karmaName && k.ChannelId.ToString() == channelId)
+                    .FirstOrDefault();
                 if (karma != null)
                 {
                     return Ok(karma);
@@ -53,7 +57,7 @@ namespace AndreaDipreApi.Controllers
         [HttpPost]
         public ActionResult<int> Post([FromBody] KarmaRequest value)
         {
-            using (var db = new KarmaDatabaseContext(_connectionString))
+            using (var db = _context)
             {
                 var karma = db.Karmas.Where(k => k.Name == value.Karma.Name).FirstOrDefault();
                 if (karma != null)
