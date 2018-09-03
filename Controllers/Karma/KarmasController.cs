@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -28,16 +29,18 @@ namespace AndreaDipreApi.Controllers
             }
         }
 
-        // GET api/karmas/5
-        [HttpGet("{karmaName}")]
-        public ActionResult<int> Get(string karmaName)
+        // GET api/karmas/%23%2fr%2fitaly/amore -> /api/karmas/#/r/italy/amore
+        [HttpGet("{channelName}/{karmaName}")]
+        public ActionResult<Karma> Get(string channelName,string karmaName)
         {
+            var decodedChannelName = WebUtility.UrlDecode(channelName);
+            
             using (var db = new KarmaDatabaseContext(_connectionString))
             {
                 var karma = db.Karmas.Where(k => k.Name == karmaName).FirstOrDefault();
                 if (karma != null)
                 {
-                    return Ok(new { score = karma.Score });
+                    return Ok(karma);
                 }
                 else
                 {
