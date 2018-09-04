@@ -70,7 +70,6 @@ namespace AndreaDipreApi.Controllers
                     {
                         karma.Score = karma.Score - 1;
                     }
-
                     db.SaveChanges();
                     return Ok(karma);
                 }

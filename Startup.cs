@@ -31,7 +31,7 @@ namespace AndreaDipreApi
             services.AddSingleton < IConfiguration > (Configuration);  
 
             var connectionString = Configuration.GetConnectionString("KarmaContext");
-            services.AddDbContext<KarmaDatabaseContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<KarmaDatabaseContext>(options => options.UseSqlite(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

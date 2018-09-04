@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 
 public class KarmaDatabaseContext : DbContext
@@ -13,11 +14,10 @@ public class KarmaDatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasPostgresExtension("uuid-ossp");
         modelBuilder
             .Entity<Channel>()
             .Property(c => c.Id)
-            .HasDefaultValueSql("uuid_generate_v4()");
+            .HasDefaultValueSql("hex(randomblob(16))");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)

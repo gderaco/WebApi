@@ -8,7 +8,7 @@ public class Channel
 {
     [Key]
     [JsonProperty(PropertyName="id")]
-    public Guid Id { get; set; }
+    public String Id { get; set; }
 
     [JsonProperty(PropertyName="name")]
     public string Name { get; set; }
