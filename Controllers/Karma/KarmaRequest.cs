@@ -7,8 +7,6 @@ public class KarmaRequest
     public Karma Karma { get; set; }
     [JsonProperty(PropertyName="action")]
     public KarmaAction Action { get; set; }
-    [JsonProperty(PropertyName="channel")]
-    public string Channel { get; set; }
 }
 
 [JsonConverter(typeof(StringEnumConverter))]

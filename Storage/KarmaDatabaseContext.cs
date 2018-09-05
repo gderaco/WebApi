@@ -27,8 +27,8 @@ public class KarmaDatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        //insert into Channels("Name") values ("#abc");
-        //insert into Channels("Name") values ("#cba")
+        //INSERT INTO "main"."Channels"("Id", "Name") VALUES ('C724506744E47F2B50FED0AE55857449', '#abc');
+        //INSERT INTO "main"."Karmas"("Id", "Name", "Score", "ChannelId") VALUES ('A61D35921C85AB2E1352FFFD806CBE09', 'amore', 3, 'C724506744E47F2B50FED0AE55857449');
         base.OnConfiguring(builder);
     }
 }

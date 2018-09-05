@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AndreaDipreApi.Migrations
 {
@@ -26,7 +25,7 @@ namespace AndreaDipreApi.Migrations
                     Id = table.Column<string>(nullable: false, defaultValueSql: "hex(randomblob(16))"),
                     Name = table.Column<string>(nullable: true),
                     Score = table.Column<int>(nullable: false),
-                    ChannelId = table.Column<Guid>(nullable: false)
+                    ChannelId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

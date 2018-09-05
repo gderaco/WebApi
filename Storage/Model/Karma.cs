@@ -16,6 +16,7 @@ public class Karma
     [JsonProperty(PropertyName="score")]
     public int Score { get; set; }
 
-    [JsonProperty(PropertyName="channel")]
-    public Guid ChannelId { get; set; }
+    [JsonProperty(PropertyName="channelId")]
+    [Column(TypeName="TEXT")]
+    public string ChannelId { get; set; }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -12,43 +13,39 @@ namespace AndreaDipreApi.Controllers
     [ApiController]
     public class KarmasController : ControllerBase
     {
-        private readonly KarmaDatabaseContext _context;
+        private readonly KarmaDatabaseContext _karmaDbContext;
 
         public KarmasController(KarmaDatabaseContext context)
         {
-            _context = context;
+            _karmaDbContext = context;
         }
-        // GET api/karmas/abc123
+
+        // GET api/karmas
         [HttpGet("{channelId}")]
         public ActionResult<IEnumerable<Karma>> Get(string channelId)
         {
-            using (var db = _context)
-            {
-                return Ok(
-                    db.Karmas
-                    .Where(k => k.ChannelId.ToString() == channelId)
-                    .ToList());
-            }
+            return Ok(_karmaDbContext.Karmas
+                .Where(k => k.ChannelId == channelId)
+                .ToList());
         }
 
-        // GET api/karmas/%23%2fr%2fitaly/amore -> /api/karmas/#/r/italy/amore
+        // GET api/karmas/C724506744E47F2B50FED0AE55857449/amore
         [HttpGet("{channelId}/{karmaName}")]
-        public ActionResult<Karma> Get(string channelId,string karmaName)
+        public ActionResult<Karma> Get(string channelId, string karmaName)
         {
-            using (var db = _context)
-            {
-                var karma = 
-                    db.Karmas
-                    .Where(k => k.Name == karmaName && k.ChannelId.ToString() == channelId)
+            var retreviedKarma =
+                _karmaDbContext.Karmas
+                .Where(k => k.Name == HttpUtility.UrlEncode(karmaName))
+                .Where(k => k.ChannelId == channelId)
                     .FirstOrDefault();
-                if (karma != null)
-                {
-                    return Ok(karma);
-                }
-                else
-                {
-                    return NotFound();
-                }
+
+            if (retreviedKarma != null)
+            {
+                return Ok(retreviedKarma);
+            }
+            else
+            {
+                return Ok();
             }
         }
 
@@ -56,38 +53,35 @@ namespace AndreaDipreApi.Controllers
         [HttpPost]
         public ActionResult<int> Post([FromBody] KarmaRequest value)
         {
-            using (var db = _context)
+            var karma = _karmaDbContext.Karmas.Where(k => k.Name == value.Karma.Name).FirstOrDefault();
+            if (karma != null)
             {
-                var karma = db.Karmas.Where(k => k.Name == value.Karma.Name).FirstOrDefault();
-                if (karma != null)
+                if (value.Action == KarmaAction.Increment)
                 {
-                    if (value.Action == KarmaAction.Increment)
-                    {
-                        karma.Score = karma.Score + 1;
-                    }
-                    else
-                    {
-                        karma.Score = karma.Score - 1;
-                    }
-                    db.SaveChanges();
-                    return Ok(karma);
+                    karma.Score = karma.Score + 1;
                 }
                 else
                 {
-                    var newKarma = new Karma { Name = value.Karma.Name };
-                    if (value.Action == KarmaAction.Increment)
-                    {
-                        newKarma.Score = 1;
-                    }
-                    else
-                    {
-                        newKarma.Score = -1;
-                    }
-
-                    db.Karmas.Add(newKarma);
-                    db.SaveChanges();
-                    return Ok(newKarma);
+                    karma.Score = karma.Score - 1;
                 }
+                _karmaDbContext.SaveChanges();
+                return Ok(karma);
+            }
+            else
+            {
+                var newKarma = new Karma { Name = value.Karma.Name };
+                if (value.Action == KarmaAction.Increment)
+                {
+                    newKarma.Score = 1;
+                }
+                else
+                {
+                    newKarma.Score = -1;
+                }
+
+                _karmaDbContext.Karmas.Add(newKarma);
+                _karmaDbContext.SaveChanges();
+                return Ok(newKarma);
             }
         }
     }
