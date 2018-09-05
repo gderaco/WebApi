@@ -27,6 +27,8 @@ public class KarmaDatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
+        //insert into Channels("Name") values ("#abc");
+        //insert into Channels("Name") values ("#cba")
         base.OnConfiguring(builder);
     }
 }

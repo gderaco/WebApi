@@ -16,9 +16,6 @@ public class Karma
     [JsonProperty(PropertyName="score")]
     public int Score { get; set; }
 
-    [JsonProperty(PropertyName="article")]
-    public string Article { get; set; }
-
     [JsonProperty(PropertyName="channel")]
     public Guid ChannelId { get; set; }
 }
