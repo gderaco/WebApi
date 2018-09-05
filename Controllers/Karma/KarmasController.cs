@@ -18,7 +18,7 @@ namespace AndreaDipreApi.Controllers
         {
             _context = context;
         }
-        // GET api/karmas
+        // GET api/karmas/abc123
         [HttpGet("{channelId}")]
         public ActionResult<IEnumerable<Karma>> Get(string channelId)
         {
@@ -26,7 +26,6 @@ namespace AndreaDipreApi.Controllers
             {
                 return Ok(
                     db.Karmas
-                    .Select(k => k)
                     .Where(k => k.ChannelId.ToString() == channelId)
                     .ToList());
             }

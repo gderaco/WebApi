@@ -18,6 +18,11 @@ public class KarmaDatabaseContext : DbContext
             .Entity<Channel>()
             .Property(c => c.Id)
             .HasDefaultValueSql("hex(randomblob(16))");
+
+        modelBuilder
+            .Entity<Karma>()
+            .Property(c => c.Id)
+            .HasDefaultValueSql("hex(randomblob(16))");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
