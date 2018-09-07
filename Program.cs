@@ -26,6 +26,6 @@ namespace AndreaDipreApi
                         .AddConsole()
                         .AddDebug()
                        .SetMinimumLevel(LogLevel.Trace);
-                }).UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT"));
+                });
     }
 }
